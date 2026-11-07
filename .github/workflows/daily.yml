@@ -1,10 +1,32 @@
-name: Stickman Animation Automation
+name: Stickman Animation Generator
 
-on: [push, workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
-  test:
+  generate-video:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Test GitHub Actions
-        run: echo "Stickman Automation is ready!"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install libraries
+        run: pip install -r requirements.txt
+
+      - name: Generate Stickman Video
+        run: python stickman_animation.py
+
+      - name: Upload MP4
+        uses: actions/upload-artifact@v4
+        with:
+          name: Stickman-Animation
+          path: stickman_video.mp4
