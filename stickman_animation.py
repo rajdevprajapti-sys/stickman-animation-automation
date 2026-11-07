@@ -5,7 +5,7 @@ import math
 
 W, H = 720, 1280
 FPS = 12
-DURATION = 30
+DURATION = 45
 
 with imageio.get_writer(
     "stickman_video.mp4",
