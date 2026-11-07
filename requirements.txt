@@ -1,1 +1,4 @@
-
+Pillow
+imageio
+imageio-ffmpeg
+numpy
