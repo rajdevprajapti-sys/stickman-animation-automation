@@ -15,48 +15,48 @@ with imageio.get_writer(
 
     for frame in range(FPS * DURATION):
 
-        img = Image.new("RGB", (W, H), "#87CEEB")
+        t = frame / FPS
+        img = Image.new("RGB", (W, H), "#17243b")
         d = ImageDraw.Draw(img)
 
         # Background
-        d.rectangle((0, 900, W, H), fill="#555555")
-        d.rectangle((0, 870, W, 900), fill="green")
+        d.rectangle((0, 900, W, H), fill="#303c35")
 
-        # Clouds
-        d.ellipse((80, 120, 220, 180), fill="white")
-        d.ellipse((400, 200, 550, 260), fill="white")
+        # Scene 1: Forest
+        if t < 15:
+            d.text((230, 100), "THE ADVENTURE", fill="white")
+            for x in range(50, 700, 180):
+                d.rectangle((x, 500, x+25, 900), fill="#68452e")
+                d.ellipse((x-70, 400, x+100, 620), fill="#23733e")
 
-        # Moving obstacle
-        ox = 650 - (frame * 5) % 850
-        d.rectangle((ox, 790, ox + 70, 870),
-                    fill="brown")
+        # Scene 2: Obstacles
+        elif t < 30:
+            d.text((260, 100), "THE CHALLENGE", fill="white")
+            d.rectangle((400, 800, 490, 900), fill="orange")
+
+        # Scene 3: Treasure
+        else:
+            d.text((260, 100), "THE TREASURE", fill="white")
+            d.rectangle((450, 750, 590, 850), fill="gold")
+            d.text((480, 780), "$$$", fill="black")
 
         # Stickman
-        x = 180 + int(25 * math.sin(frame * 0.08))
-        jump = abs(math.sin(frame * 0.08)) * 100
-        y = int(740 - jump)
+        x = 180 + int(100 * math.sin(t))
+        y = 700 - int(70 * abs(math.sin(t * 3)))
 
-        # Head
-        d.ellipse((x-35, y-150, x+35, y-80),
-                  outline="black", width=8)
-
-        # Body
-        d.line((x, y-80, x, y+50),
-               fill="black", width=9)
-
-        # Arms
-        swing = int(35 * math.sin(frame * 0.3))
-        d.line((x, y-40, x-50, y+swing),
-               fill="black", width=8)
-        d.line((x, y-40, x+50, y-swing),
-               fill="black", width=8)
-
-        # Legs
-        d.line((x, y+50, x-40, y+120+swing),
-               fill="black", width=9)
-        d.line((x, y+50, x+40, y+120-swing),
-               fill="black", width=9)
+        d.ellipse((x-30, y-150, x+30, y-90),
+                  outline="white", width=7)
+        d.line((x, y-90, x, y+30),
+               fill="white", width=8)
+        d.line((x, y-60, x-55, y-20),
+               fill="white", width=7)
+        d.line((x, y-60, x+55, y-20),
+               fill="white", width=7)
+        d.line((x, y+30, x-40, y+100),
+               fill="white", width=8)
+        d.line((x, y+30, x+40, y+100),
+               fill="white", width=8)
 
         video.append_data(np.array(img))
 
-print("Stickman video created!")
+print("Adventure video created!")
